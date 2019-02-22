@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Patrick Schmidt" />
+
+<meta name="date" content="2019-02-12" />
+
+<title>Tutorial for PointFore</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Tutorial for PointFore</h1>
+<h4 class="author"><em>Patrick Schmidt</em></h4>
+<h4 class="date"><em>2019-02-12</em></h4>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The PointFore package can be loaded the usual way.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PointFore)</code></pre></div>
+<p>The main function is <em>estimate.functional()</em> which creates an object of class <em>pointfore</em>. Many parameters are available but most of them can be set to their default values. They are explained in details below through examples.</p>
+<p>The function <em>estimate.functional()</em> provides a convenient wrapper for the estimation based on the <em>gmm package</em>. The main arguments are the <em>forecast X</em> and the <em>realizations Y</em>. Further, one can choose between <em>quantiles</em> and <em>expectiles</em> and the model that describes the forecasted level.</p>
+<p>The available methods for a pointfore object are <em>plot</em> and <em>summary</em>.</p>
+</div>
+<div id="simulated-example" class="section level1">
+<h1>Simulated Example</h1>
+<p>We illustrate the application of the package in a simple simulated example.</p>
+<div id="generate-data" class="section level2">
+<h2>Generate data</h2>
+<p>First, we generate a time series Y with mean Y.mean. Further, we generate an <strong>optimal mean-forecast X</strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
+
+Y.mean &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">200</span>,<span class="dv">0</span>,<span class="dv">1</span>)
+
+Y &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">200</span>,Y.mean,<span class="dv">1</span>)
+
+X &lt;-<span class="st"> </span>Y.mean</code></pre></div>
+</div>
+<div id="estimation-of-the-functional" class="section level2">
+<h2>Estimation of the functional</h2>
+<p>Now, we apply a class of <strong>constant expectile forecasts</strong>. The <em>summary</em> function shows the call and the estimation result, and the J-test of overidentifying restrictions.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res.const &lt;-<span class="st"> </span><span class="kw">estimate.functional</span>(
+                            <span class="dt">iden.fct =</span> expectiles,
+                            <span class="dt">model =</span> constant,
+                            <span class="dt">Y =</span> Y,
+                            <span class="dt">X =</span> X,
+                            <span class="dt">theta0 =</span> <span class="fl">0.5</span>)
+<span class="co">#&gt; Drop  1 case(s) because of chosen instruments</span>
+
+<span class="kw">summary</span>(res.const)
+<span class="co">#&gt; $call</span>
+<span class="co">#&gt; estimate.functional(iden.fct = expectiles, model = constant, </span>
+<span class="co">#&gt;     theta0 = 0.5, Y = Y, X = X)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $coefficients</span>
+<span class="co">#&gt;           Estimate Std. Error  t value     Pr(&gt;|t|)</span>
+<span class="co">#&gt; Theta[1] 0.4810124  0.0347885 13.82677 1.757478e-43</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $Jtest</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  ##  J-Test: degrees of freedom is 2  ## </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                 J-test   P-value</span>
+<span class="co">#&gt; Test E(g)=0:    1.45544  0.48301</span></code></pre></div>
+<p>The results imply an expectile level close to 0.5.</p>
+<p>In a second step, we estimate a <strong>state-dependent expectile</strong> model, where the level of the expectile can depend on the current forecast.</p>
+<p>The <em>linear probit</em> model is already implemented in the <em>PointFore</em> package. The level of the forecast depends on the the state variable s, via the formula</p>
+<p><span class="math display">\[ level = inv.logit(\theta_1 + s \theta_2)= (1+exp(\theta_1 + s \theta_2)^{-1})^{-1}. \]</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res.flexible &lt;-<span class="st"> </span><span class="kw">estimate.functional</span>(<span class="dt">iden.fct =</span> expectiles,
+                                    <span class="dt">model =</span> probit_linear,
+                                    <span class="dt">Y =</span> Y,<span class="dt">X =</span> X,
+                                    <span class="dt">theta0 =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),
+                                    <span class="dt">stateVariable =</span> X)
+<span class="co">#&gt; Drop  1 case(s) because of chosen instruments</span>
+<span class="kw">summary</span>(res.flexible)
+<span class="co">#&gt; $call</span>
+<span class="co">#&gt; estimate.functional(iden.fct = expectiles, model = probit_linear, </span>
+<span class="co">#&gt;     theta0 = c(0, 0), Y = Y, X = X, stateVariable = X)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $coefficients</span>
+<span class="co">#&gt;             Estimate Std. Error    t value  Pr(&gt;|t|)</span>
+<span class="co">#&gt; Theta[1] -0.04812388 0.08743848 -0.5503742 0.5820628</span>
+<span class="co">#&gt; Theta[2]  0.03844594 0.08965164  0.4288370 0.6680418</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $Jtest</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  ##  J-Test: degrees of freedom is 1  ## </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                 J-test   P-value</span>
+<span class="co">#&gt; Test E(g)=0:    1.26840  0.26007</span></code></pre></div>
+</div>
+<div id="plot-results" class="section level2">
+<h2>Plot results</h2>
+<p>For interpretation, the results can be plotted with the according pointwise confidence intervals. For state-dependent models the state is plotted on the x-axis. In green, we see a density estimate of the state.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(res.const)
+<span class="kw">plot</span>(res.flexible)</code></pre></div>
+<p><img src="data:image/png;base64,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" alt="The results of the constant and flexible model plotted against the forecast." /><img src="data:image/png;base64,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" alt="The results of the constant and flexible model plotted against the forecast." /></p>
+</div>
+<div id="wald-tests" class="section level2">
+<h2>Wald tests</h2>
+<p>It is straight forward to apply standard Wald tests to the estimated <em>gmm-object</em>. First, we have to load the car package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(car)
+<span class="co">#&gt; Loading required package: carData</span></code></pre></div>
+<p>For the constant model, the mean forecast, which is equal to the <span class="math inline">\(0.5\)</span>-expectile forecast cannot be rejected by a Wald-type test</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">linearHypothesis</span>(res.const<span class="op">$</span>gmm,<span class="st">&quot;Theta[1]=0.5&quot;</span>)
+<span class="co">#&gt; Linear hypothesis test</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Hypothesis:</span>
+<span class="co">#&gt; Theta[1] = 0.5</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Model 1: restricted model</span>
+<span class="co">#&gt; Model 2: res.const$gmm</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   Df  Chisq Pr(&gt;Chisq)</span>
+<span class="co">#&gt; 1                     </span>
+<span class="co">#&gt; 2  1 0.2979     0.5852</span></code></pre></div>
+<p>Similarly, the flexible linear probit model cannot reject the mean-forecast (<span class="math inline">\(H_0: \theta_1=0 \wedge \theta_2 =0\)</span>), nor state-independence(<span class="math inline">\(H_0: \theta_2 =0\)</span>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">linearHypothesis</span>(res.flexible<span class="op">$</span>gmm,<span class="kw">c</span>(<span class="st">&quot;Theta[1]=0&quot;</span>, <span class="st">&quot;Theta[2]=0&quot;</span>))
+<span class="co">#&gt; Linear hypothesis test</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Hypothesis:</span>
+<span class="co">#&gt; Theta[1] = 0</span>
+<span class="co">#&gt; Theta[2] = 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Model 1: restricted model</span>
+<span class="co">#&gt; Model 2: res.flexible$gmm</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   Df  Chisq Pr(&gt;Chisq)</span>
+<span class="co">#&gt; 1                     </span>
+<span class="co">#&gt; 2  2 0.4819     0.7859</span>
+
+<span class="kw">linearHypothesis</span>(res.flexible<span class="op">$</span>gmm,<span class="st">&quot;Theta[2]=0&quot;</span>)
+<span class="co">#&gt; Linear hypothesis test</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Hypothesis:</span>
+<span class="co">#&gt; Theta[2] = 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Model 1: restricted model</span>
+<span class="co">#&gt; Model 2: res.flexible$gmm</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   Df  Chisq Pr(&gt;Chisq)</span>
+<span class="co">#&gt; 1                     </span>
+<span class="co">#&gt; 2  1 0.1839      0.668</span></code></pre></div>
+</div>
+</div>
+<div id="creating-your-own-specification-models" class="section level1">
+<h1>Creating your own specification models</h1>
+<p>You can also <strong>create your own specification models</strong>, which describe how the levels of the quantile/expectile depend on the state variable.</p>
+<p>The two parameters  and  are necessary. The output is the level and should always be in the unit interval.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">break_model &lt;-<span class="st"> </span><span class="cf">function</span>(stateVariable, theta)
+{
+  <span class="cf">if</span>(<span class="kw">length</span>(theta)<span class="op">!=</span><span class="dv">2</span>)
+    <span class="kw">stop</span>(<span class="st">&quot;Wrong dimension of theta&quot;</span>)
+  
+  <span class="kw">return</span>(boot<span class="op">::</span><span class="kw">inv.logit</span>(theta[<span class="dv">1</span>]<span class="op">+</span>theta[<span class="dv">2</span>]<span class="op">*</span>(stateVariable<span class="op">&gt;</span><span class="dv">0</span>)))
+}</code></pre></div>
+<p>Now, we can estimate the model</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res.break &lt;-<span class="st"> </span><span class="kw">estimate.functional</span>(<span class="dt">iden.fct =</span> expectiles,
+                                    <span class="dt">model =</span> break_model,
+                                    <span class="dt">Y =</span> Y,<span class="dt">X =</span> X,
+                                    <span class="dt">theta0 =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),
+                                    <span class="dt">stateVariable =</span> X)
+<span class="co">#&gt; Drop  1 case(s) because of chosen instruments</span>
+
+<span class="kw">summary</span>(res.break)
+<span class="co">#&gt; $call</span>
+<span class="co">#&gt; estimate.functional(iden.fct = expectiles, model = break_model, </span>
+<span class="co">#&gt;     theta0 = c(0, 0), Y = Y, X = X, stateVariable = X)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $coefficients</span>
+<span class="co">#&gt;            Estimate Std. Error    t value  Pr(&gt;|t|)</span>
+<span class="co">#&gt; Theta[1] -0.1410560  0.2081387 -0.6777018 0.4979608</span>
+<span class="co">#&gt; Theta[2]  0.1420977  0.3362443  0.4226025 0.6725853</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $Jtest</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  ##  J-Test: degrees of freedom is 1  ## </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                 J-test   P-value</span>
+<span class="co">#&gt; Test E(g)=0:    1.27252  0.25929</span>
+
+<span class="kw">plot</span>(res.break)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>If we use a <strong>forecast that is biased</strong> for positive means:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span>Y.mean <span class="op">+</span><span class="st"> </span><span class="fl">0.2</span> <span class="op">*</span>(Y.mean<span class="op">&gt;</span><span class="dv">0</span>)
+
+res.break &lt;-<span class="st"> </span><span class="kw">estimate.functional</span>(<span class="dt">iden.fct =</span> expectiles,
+                                    <span class="dt">model =</span> break_model,
+                                    <span class="dt">Y =</span> Y,<span class="dt">X =</span> X,
+                                    <span class="dt">theta0 =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),
+                                    <span class="dt">stateVariable =</span> X)
+<span class="co">#&gt; Drop  1 case(s) because of chosen instruments</span>
+
+<span class="kw">summary</span>(res.break)
+<span class="co">#&gt; $call</span>
+<span class="co">#&gt; estimate.functional(iden.fct = expectiles, model = break_model, </span>
+<span class="co">#&gt;     theta0 = c(0, 0), Y = Y, X = X, stateVariable = X)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $coefficients</span>
+<span class="co">#&gt;            Estimate Std. Error    t value   Pr(&gt;|t|)</span>
+<span class="co">#&gt; Theta[1] -0.1440108  0.2067031 -0.6967034 0.48598846</span>
+<span class="co">#&gt; Theta[2]  0.7029084  0.3054015  2.3015878 0.02135843</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $Jtest</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  ##  J-Test: degrees of freedom is 1  ## </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                 J-test   P-value</span>
+<span class="co">#&gt; Test E(g)=0:    1.97414  0.16001</span>
+
+<span class="kw">plot</span>(res.break)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>A bias that can also be detected by the linear probit model, which has a similar shape.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res.flexible &lt;-<span class="st"> </span><span class="kw">estimate.functional</span>(<span class="dt">iden.fct =</span> expectiles,
+                                    <span class="dt">model =</span> probit_linear,
+                                    <span class="dt">Y =</span> Y,<span class="dt">X =</span> X,
+                                    <span class="dt">theta0 =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),
+                                    <span class="dt">stateVariable =</span> X)
+<span class="co">#&gt; Drop  1 case(s) because of chosen instruments</span>
+
+<span class="kw">summary</span>(res.flexible)
+<span class="co">#&gt; $call</span>
+<span class="co">#&gt; estimate.functional(iden.fct = expectiles, model = probit_linear, </span>
+<span class="co">#&gt;     theta0 = c(0, 0), Y = Y, X = X, stateVariable = X)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $coefficients</span>
+<span class="co">#&gt;            Estimate Std. Error  t value   Pr(&gt;|t|)</span>
+<span class="co">#&gt; Theta[1] 0.09608041 0.09046600 1.062061 0.28820795</span>
+<span class="co">#&gt; Theta[2] 0.17283605 0.07911063 2.184739 0.02890801</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $Jtest</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  ##  J-Test: degrees of freedom is 1  ## </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                 J-test   P-value</span>
+<span class="co">#&gt; Test E(g)=0:    1.99599  0.15772</span>
+
+<span class="kw">plot</span>(res.flexible)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="applying-non-standard-instruments" class="section level1">
+<h1>Applying non-standard instruments</h1>
+<p>However, the biased forecast is <strong>not optimal with respect to the linear probit model</strong>. The deviation can be detected by the J-test of overidentifying restrictions if we use appropriate instruments, that generate a sufficiently rich information set to test for.</p>
+<p>If we include the squared forecast with its original sign in the instruments, the test rejects optimality with respect to the linear probit model with a p-value below 0.05 and correctly cannot reject optimality with respect to the break model with a p-value of 0.11.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res.flexible &lt;-<span class="st"> </span><span class="kw">estimate.functional</span>(<span class="dt">iden.fct =</span> expectiles,
+                                    <span class="dt">model =</span> probit_linear,
+                                    <span class="dt">Y =</span> Y,<span class="dt">X =</span> X,
+                                    <span class="dt">theta0 =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),
+                                    <span class="dt">instruments =</span> <span class="kw">c</span>(<span class="st">&quot;lag(Y)&quot;</span>,<span class="st">&quot;X&quot;</span>,<span class="st">&quot;sign(X)*X^2&quot;</span>),
+                                    <span class="dt">stateVariable =</span> X)
+<span class="co">#&gt; Drop  1 case(s) because of chosen instruments</span>
+
+<span class="kw">summary</span>(res.flexible)<span class="op">$</span>Jtest
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  ##  J-Test: degrees of freedom is 2  ## </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                 J-test   P-value</span>
+<span class="co">#&gt; Test E(g)=0:    8.28543  0.01588</span>
+
+res.break &lt;-<span class="st"> </span><span class="kw">estimate.functional</span>(<span class="dt">iden.fct =</span> expectiles,
+                                    <span class="dt">model =</span> probit_break,
+                                    <span class="dt">Y =</span> Y,<span class="dt">X =</span> X,
+                                    <span class="dt">theta0 =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),
+                                    <span class="dt">instruments =</span> <span class="kw">c</span>(<span class="st">&quot;lag(Y)&quot;</span>,<span class="st">&quot;X&quot;</span>,<span class="st">&quot;sign(X)*X^2&quot;</span>),
+                                    <span class="dt">stateVariable =</span> X)
+<span class="co">#&gt; Drop  1 case(s) because of chosen instruments</span>
+
+<span class="kw">summary</span>(res.break)<span class="op">$</span>Jtest
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  ##  J-Test: degrees of freedom is 2  ## </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                 J-test  P-value</span>
+<span class="co">#&gt; Test E(g)=0:    4.3678  0.1126</span></code></pre></div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
